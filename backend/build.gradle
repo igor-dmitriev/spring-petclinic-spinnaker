@@ -1,11 +1,30 @@
-apply plugin: 'org.springframework.boot'
-apply from: 'deploy.gradle'
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id "com.moowork.node" version "1.3.1"
+    id "nebula.ospackage" version "8.3.0"
+    id 'com.palantir.git-version' version '0.12.2'
+}
+
+apply plugin: 'io.spring.dependency-management'
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     compile 'io.jsonwebtoken:jjwt:0.9.1'
     compile 'org.postgresql:postgresql'
     compile 'org.flywaydb:flyway-core'
@@ -14,12 +33,47 @@ dependencies {
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.testcontainers:postgresql:1.10.0'
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.3.2')
+    testImplementation('org.mockito:mockito-junit-jupiter:2.23.0')
+    testCompile 'org.junit.platform:junit-platform-runner:1.3.2'
+    testCompile 'org.junit.platform:junit-platform-commons:1.4.0'
+
+}
+
+bootJar {
+    baseName "spring-petclinic"
+    manifest {
+        attributes(
+                'Implementation-Version': versionDetails().lastTag
+        )
+    }
+}
+
+def frontendPath = "${rootDir}" + "/frontend"
+
+node {
+    nodeModulesDir = file(frontendPath)
+}
+task npmBuild(type: NpmTask, dependsOn: npmInstall) {
+    workingDir = file(frontendPath)
+    inputs.files(fileTree(frontendPath).matching { exclude ".nuxt", "node_modules" })
+    outputs.dir(frontendPath + '/public')
+
+    doFirst {
+        args = ['run', "build:prod"]
+    }
+}
+
+task assembleApp() {
+    dependsOn(npmBuild)
+    finalizedBy(assemble)
 }
 
 gradle.taskGraph.whenReady { graph ->
-    if (graph.hasTask(':application:assembleApp')) {
+    if (graph.hasTask(':backend:assembleApp')) {
         tasks['bootJar'].with {
-            from("${rootDir}/frontend/public") {
+            from(frontendPath + "/public") {
                 include "**"
                 into 'static'
             }
@@ -27,6 +81,31 @@ gradle.taskGraph.whenReady { graph ->
     }
 }
 
-bootJar {
-    baseName "spring-petclinic"
+ospackage {
+    packageName = 'petclinic'
+    description = 'Spring Pet Clinic'
+    os = LINUX
+    arch = X86_64
+    type = BINARY
+    version = versionDetails().lastTag
+    release = 1
+
+    configurationFile "/opt/petclinic/bin/petclinic.service"
+
+    into '/opt/petclinic'
+
+    from(jar.outputs.files) {
+        into 'lib'
+        fileMode 0500
+        user 'ec2-user'
+        permissionGroup 'ec2-user'
+    }
+
+    from('lib/systemd/system') {
+        into 'bin'
+    }
+}
+
+task packRpm(type: Rpm) {
+    link('/etc/systemd/system/petclinic.service', '/opt/petclinic/bin/petclinic.service')
 }

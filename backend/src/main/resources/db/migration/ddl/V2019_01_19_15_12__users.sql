@@ -1,6 +1,10 @@
+CREATE SEQUENCE IF NOT EXISTS users_seq
+    START WITH 1
+    INCREMENT BY 1;
+
 CREATE TABLE IF NOT EXISTS users
 (
-    id       INT PRIMARY KEY,
+    id       INT DEFAULT nextval('users_seq') PRIMARY KEY,
     name     VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL
 );
