@@ -23,7 +23,7 @@ Note: Spring Boot Server App must be running before starting the client!
 To start the server, launch a Terminal and run from the project's root folder (`spring-petclinic-reactjs-ui-tests`):
 ```
 1. ./gradlew clean build
-2. java -jar application/build/libs/spring-petclinic-1.7.0-SNAPSHOT.jar
+2. java -jar application/build/libs/spring-petclinic-*.jar
 ```
 but there is a more preferable option to run Spring Boot from IDEA:
 
