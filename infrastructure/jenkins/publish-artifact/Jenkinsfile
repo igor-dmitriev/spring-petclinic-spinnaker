@@ -1,0 +1,106 @@
+pipeline {
+    agent any
+    options {
+        skipDefaultCheckout()
+        parallelsAlwaysFailFast()
+        timestamps()
+        timeout(time: 15, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30', daysToKeepStr: '7'))
+    }
+    triggers {
+        pollSCM('')
+    }
+    stages {
+        stage('Checkout project') {
+            steps {
+                dir('build-folder') {
+                    deleteDir()
+                }
+                dir('build-folder') {
+                    git branch: 'master',
+                            credentialsId: 'c49697d3-ea17-4e25-8468-b55f87f32402',
+                            url: 'git@github.com:igor-dmitriev/spring-petclinic-spinnaker.git'
+                    script {
+                        def commitSha = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                        def commitMessage = sh(returnStdout: true, script: "git log -1 --pretty=%B")
+                        currentBuild.description = commitSha + " : " + commitMessage
+                    }
+                }
+            }
+        }
+        stage('Create release jar artifact') {
+            options {
+                lock resource: 'artifact', inversePrecedence: true
+            }
+            stages {
+                stage('Create git tag') {
+                    steps {
+                        dir('build-folder') {
+                            sshagent(credentials: ['c49697d3-ea17-4e25-8468-b55f87f32402']) {
+                                sh './gradlew final'
+                            }
+                            script {
+                                def version = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
+                                env.VERSION = version
+                            }
+                        }
+                    }
+                }
+                stage('Build jar') {
+                    steps {
+                        dir('build-folder') {
+                            sh './gradlew assembleApp'
+                        }
+                        milestone label: '', ordinal: Integer.parseInt(env.BUILD_ID)
+                    }
+                }
+            }
+        }
+        stage('Build rpm package') {
+            steps {
+                dir('build-folder') {
+                    sh './gradlew packRpm'
+                }
+            }
+        }
+        stage('Archive rpm package') {
+            steps {
+                dir('build-folder') {
+                    archiveArtifacts 'backend/build/distributions/*.rpm'
+                    archiveArtifacts 'gradle.properties'
+                }
+            }
+        }
+        stage('Publish artifact') {
+            steps {
+                dir('build-folder') {
+                    withCredentials([[
+                                             $class           : 'AmazonWebServicesCredentialsBinding',
+                                             credentialsId    : 's3-aws-credentials',
+                                             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                                             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                                     ]]) {
+                        sh './infrastructure/scripts/publish-rpm.sh -s backend/build/distributions -t petclinic-yum-repository'
+                    }
+                }
+            }
+        }
+        stage('Clean up jenkins tmp yum repository') {
+            steps {
+                dir('/tmp/petclinic-yum-repository') {
+                    deleteDir()
+                }
+            }
+        }
+    }
+    post {
+        success {
+            writeBuildProperties()
+        }
+    }
+}
+
+def writeBuildProperties() {
+    writeFile file: 'build.properties', text: "buildUrl=${env.BUILD_URL}\nversion=${env.VERSION}"
+    archiveArtifacts artifacts: 'build.properties'
+}
