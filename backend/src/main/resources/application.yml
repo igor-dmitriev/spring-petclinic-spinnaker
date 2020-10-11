@@ -1,14 +1,14 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/petclinic
+    url: jdbc:postgresql://${AWS_DB_HOST:localhost}/petclinic
     username: petclinic
-    password: q9KqUiu2vqnAuf
+    password: ${AWS_DB_PASSWORD:q1KqZiu3vLnAug}
     driverClassName: org.postgresql.Driver
 
   data:
-     jpa:
-       repositories:
-         bootstrap-mode: deferred
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
@@ -26,12 +26,12 @@ spring:
             non_contextual_creation: true
     open-in-view: false
   flyway:
-    locations: ["classpath:db/migration/ddl", "classpath:db/migration/dml"]
+    locations: [ "classpath:db/migration/ddl", "classpath:db/migration/dml" ]
 
 security:
-    custom:
-      login-url: "/login"
-      excluded-api: "/actuator/**, /, /login, /test, /css/**, /fonts/**, /img/**, /js/**, /favicon.ico"
-    token:
-      expiration-time-seconds: 600
-      token-prefix: "Bearer"
+  custom:
+    login-url: "/login"
+    excluded-api: "/actuator/**, /, /login, /test, /css/**, /fonts/**, /img/**, /js/**, /favicon.ico"
+  token:
+    expiration-time-seconds: 600
+    token-prefix: "Bearer"

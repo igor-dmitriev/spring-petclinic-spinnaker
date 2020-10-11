@@ -25,11 +25,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    compile 'io.jsonwebtoken:jjwt:0.9.1'
-    compile 'org.postgresql:postgresql'
-    compile 'org.flywaydb:flyway-core'
-    compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
-    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    implementation 'com.google.guava:guava:28.0-jre'
+    implementation 'software.amazon.awssdk:ssm:2.10.89'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile 'org.testcontainers:postgresql:1.10.0'
