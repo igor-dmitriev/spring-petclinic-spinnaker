@@ -67,7 +67,7 @@ dependencies {
 }
 
 bootJar {
-    baseName "springpetclinic"
+    baseName "petclinic"
     manifest {
         attributes(
                 'Implementation-Version': versionDetails().lastTag
@@ -107,7 +107,7 @@ gradle.taskGraph.whenReady { graph ->
 }
 
 ospackage {
-    packageName = 'springpetclinic'
+    packageName = 'petclinic'
     description = 'Spring Pet Clinic project'
     os = LINUX
     arch = X86_64
@@ -115,9 +115,9 @@ ospackage {
     version = versionDetails().lastTag
     release = 1
 
-    configurationFile "/opt/springpetclinic/bin/springpetclinic.service"
+    configurationFile "/opt/petclinic/bin/petclinic.service"
 
-    into '/opt/springpetclinic'
+    into '/opt/petclinic'
 
     from(jar.outputs.files) {
         into 'lib'
@@ -134,5 +134,5 @@ ospackage {
 task packRpm(type: Rpm) {
     inputs.files(jar.outputs.files)
     outputs.dir("${rootDir}/backend/build/distributions")
-    link('/etc/systemd/system/springpetclinic.service', '/opt/springpetclinic/bin/springpetclinic.service')
+    link('/etc/systemd/system/petclinic.service', '/opt/petclinic/bin/petclinic.service')
 }

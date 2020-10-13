@@ -1,0 +1,17 @@
+[Unit]
+Description=Spring Pet Clinic project
+After=amazon-ssm-agent.service
+
+[Service]
+EnvironmentFile=-/etc/default/petclinic
+ExecStart=/usr/bin/bash -c "java -Xmx3g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=\"target/logs/\" -jar /opt/petclinic/lib/petclinic-*.jar"
+SuccessExitStatus=143
+
+Restart=on-failure
+
+StandardOutput=messages
+StandardError=messages
+SyslogIdentifier=petclinic
+
+[Install]
+WantedBy=multi-user.target
