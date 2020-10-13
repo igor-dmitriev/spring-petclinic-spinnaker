@@ -127,6 +127,12 @@ ospackage {
         permissionGroup 'root'
     }
 
+    from('test') {
+        into 'lib'
+        user 'root'
+        permissionGroup 'root'
+    }
+
     from('lib/systemd/system') {
         into 'bin'
         user 'root'
