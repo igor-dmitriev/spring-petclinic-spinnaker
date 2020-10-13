@@ -37,7 +37,7 @@ pipeline {
                     steps {
                         dir('build-folder') {
                             sshagent(credentials: ['c49697d3-ea17-4e25-8468-b55f87f32402']) {
-                                sh './gradlew final'
+                                sh './gradlew final --info'
                             }
                             script {
                                 def version = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
@@ -59,7 +59,7 @@ pipeline {
         stage('Build rpm package') {
             steps {
                 dir('build-folder') {
-                    sh './gradlew packRpm'
+                    sh './gradlew packRpm --info'
                 }
             }
         }
