@@ -121,9 +121,6 @@ ospackage {
 
     from(jar.outputs.files) {
         into 'lib'
-        fileMode 0500
-        user 'root'
-        permissionGroup 'root'
     }
 
     from('lib/systemd/system') {
