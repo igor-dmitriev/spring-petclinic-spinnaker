@@ -122,13 +122,6 @@ ospackage {
 
     from(jar.outputs.files) {
         into '/lib'
-        fileMode 0500
-        user 'root'
-        permissionGroup 'root'
-    }
-
-    from('test') {
-        into 'lib'
         user 'root'
         permissionGroup 'root'
     }
