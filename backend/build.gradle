@@ -133,6 +133,6 @@ ospackage {
 
 task packRpm(type: Rpm) {
     inputs.files(jar.outputs.files)
-    outputs.files(jar.outputs.files)
+    outputs.dir("${rootDir}/backend/build/distributions")
     link('/etc/systemd/system/springpetclinic.service', '/opt/springpetclinic/bin/springpetclinic.service')
 }
