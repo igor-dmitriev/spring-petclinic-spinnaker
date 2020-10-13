@@ -121,14 +121,16 @@ ospackage {
     into '/opt/petclinic'
 
     from(jar.outputs.files) {
-        into 'lib'
+        into '/lib'
         fileMode 0500
-        user 'ec2-user'
-        permissionGroup 'ec2-user'
+        user 'root'
+        permissionGroup 'root'
     }
 
     from('lib/systemd/system') {
         into 'bin'
+        user 'root'
+        permissionGroup 'root'
     }
 }
 
