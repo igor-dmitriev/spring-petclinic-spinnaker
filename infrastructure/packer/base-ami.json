@@ -1,0 +1,29 @@
+{
+  "builders": [
+    {
+      "profile": "default",
+      "type": "amazon-ebs",
+      "instance_type": "{{user `instance_type`}}",
+      "source_ami": "{{user `base_ami`}}",
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "security_group_ids": "{{user `security_group_ids`}}",
+      "region": "{{user `aws_region`}}",
+      "ssh_username": "ec2-user",
+      "ssh_timeout": "10m",
+      "ami_name": "{{user `ami_name`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "init.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "cat /tmp/base_ami.log"
+      ]
+    }
+  ]
+}
