@@ -49,7 +49,7 @@ pipeline {
                 stage('Build jar') {
                     steps {
                         dir('build-folder') {
-                            sh './gradlew assembleApp'
+                            sh './gradlew assembleApp --rerun-tasks'
                         }
                         milestone label: '', ordinal: Integer.parseInt(env.BUILD_ID)
                     }
@@ -59,7 +59,7 @@ pipeline {
         stage('Build rpm package') {
             steps {
                 dir('build-folder') {
-                    sh './gradlew packRpm'
+                    sh './gradlew packRpm --rerun-tasks'
                 }
             }
         }
