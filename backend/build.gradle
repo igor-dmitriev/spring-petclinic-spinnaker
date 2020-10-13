@@ -120,7 +120,7 @@ ospackage {
 
     into '/opt/petclinic'
 
-    from(jar.outputs.files) {
+    from("${rootDir}/backend/build/libs") {
         into 'lib'
         user 'root'
         permissionGroup 'root'
