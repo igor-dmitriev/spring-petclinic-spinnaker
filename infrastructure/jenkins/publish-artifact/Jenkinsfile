@@ -67,7 +67,6 @@ pipeline {
             steps {
                 dir('build-folder') {
                     archiveArtifacts 'backend/build/distributions/*.rpm'
-                    archiveArtifacts 'gradle.properties'
                 }
             }
         }
