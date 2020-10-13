@@ -89,7 +89,7 @@ ospackage {
     os = LINUX
     arch = X86_64
     type = BINARY
-    version = 1//versionDetails().lastTag
+    version = versionDetails().lastTag
     release = 1
 
     configurationFile "/opt/petclinic/bin/petclinic.service"
