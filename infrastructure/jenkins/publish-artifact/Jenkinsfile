@@ -80,14 +80,14 @@ pipeline {
                                              accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                                              secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                                      ]]) {
-                        sh './infrastructure/scripts/publish-rpm.sh -s backend/build/distributions -t petclinic-yum-repository'
+                        sh './infrastructure/scripts/publish-rpm.sh -s backend/build/distributions -t springpetclinic-yum-repository'
                     }
                 }
             }
         }
         stage('Clean up jenkins tmp yum repository') {
             steps {
-                dir('/tmp/petclinic-yum-repository') {
+                dir('/tmp/springpetclinic-yum-repository') {
                     deleteDir()
                 }
             }
