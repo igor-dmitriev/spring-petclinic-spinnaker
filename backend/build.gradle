@@ -68,6 +68,7 @@ dependencies {
 
 bootJar {
     baseName "petclinic"
+    launchScript() // creates fully executable archives
     manifest {
         attributes(
                 'Implementation-Version': versionDetails().lastTag
@@ -121,6 +122,9 @@ ospackage {
 
     from(jar.outputs.files) {
         into 'lib'
+        fileMode 0500
+        user 'ec2-user'
+        permissionGroup 'ec2-user'
     }
 
     from('lib/systemd/system') {
