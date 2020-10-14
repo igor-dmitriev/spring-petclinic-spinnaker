@@ -23,7 +23,7 @@ module.exports = {
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
       },
-       __API_SERVER_URL__: JSON.stringify('http://0.0.0.0:8080')
+       __API_SERVER_URL__: JSON.stringify('http://internal-petclinic-staging-2106783955.us-east-1.elb.amazonaws.com')
     })
   ],
   resolve: {
