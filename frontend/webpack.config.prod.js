@@ -22,8 +22,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production'),
-      },
-       __API_SERVER_URL__: JSON.stringify('http://internal-petclinic-staging-2106783955.us-east-1.elb.amazonaws.com')
+      }
     })
   ],
   resolve: {
