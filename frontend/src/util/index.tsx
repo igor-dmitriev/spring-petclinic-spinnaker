@@ -1,8 +1,7 @@
 import {IHttpMethod} from '../types';
 import * as Cookies from 'es-cookie';
 
-const BACKEND_URL = (typeof process.env.NODE_ENV !== 'production' ? 'http://localhost:8080' : `${window.location.origin.toString()}`);
-
+const BACKEND_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : `${window.location.origin.toString()}`;
 export const url = (path: string): string => `${BACKEND_URL}/${path}`;
 
 /**
