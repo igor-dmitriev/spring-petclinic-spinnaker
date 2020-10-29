@@ -11,6 +11,9 @@ build/
 .springBeans
 .sts4-cache
 
+# Local .terraform directories
+**/.terraform/*
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
