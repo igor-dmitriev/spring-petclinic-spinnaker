@@ -59,8 +59,6 @@ pipeline {
         stage('Build rpm package') {
             steps {
                 dir('build-folder') {
-                    sh 'ls -lah'
-                    sh 'ls -lah backend/build/libs'
                     sh './gradlew packRpm'
                 }
             }
