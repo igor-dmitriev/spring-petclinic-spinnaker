@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-petclinic-app
+  namespace: staging
+spec:
+  minReadySeconds: 15
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+        - image: 'idmitriiev/spring-petclinic-spinnaker:${trigger["tag"]}'
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 25m
+              memory: 10Mi
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 4
+            periodSeconds: 5
+          name: spring-petclinic
+          env:
+            - name: spring.datasource.url
+              value: jdbc:postgresql://spring-petclinic-db:5432/petclinic
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 4
+            periodSeconds: 5
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-petclinic-app
+  namespace: staging
+spec:
+  ports:
+    - nodePort: 30007
+      port: 8080
+      protocol: TCP
+  selector:
+    app: spring-petclinic
+  type: NodePort

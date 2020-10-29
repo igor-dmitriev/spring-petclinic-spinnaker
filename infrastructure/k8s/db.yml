@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-petclinic-db
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: db
+  template:
+    metadata:
+      labels:
+        role: db
+    spec:
+      containers:
+        - name: spring-petclinic-db
+          image: postgres:9.6.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: petclinic
+            - name: POSTGRES_DB
+              value: petclinic
+            - name: POSTGRES_PASSWORD
+              value: q1KqZiu3vLnAug
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: staging
+  name: spring-petclinic-db
+spec:
+  selector:
+    role: db
+  ports:
+    - name: postgresql
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+      nodePort: 30003
+  type: NodePort
