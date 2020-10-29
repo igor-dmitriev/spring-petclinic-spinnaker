@@ -33,5 +33,6 @@ security:
     login-url: "/login"
     excluded-api: "/actuator/**, /, /login, /test, /css/**, /fonts/**, /img/**, /js/**, /favicon.ico"
   token:
-    expiration-time-seconds: 600
+    expiration-time-seconds: 3600
     token-prefix: "Bearer"
+    secret-key: "7d89efb7aeb8006d9103a0fz1"

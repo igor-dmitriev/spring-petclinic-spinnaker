@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Value("${security.token.token-prefix}")
   private String tokenPrefix;
+
+  @Value("${security.token.secret-key}")
+  private String secretKey;
 
   @Autowired
   public SecurityConfig(UserDetailsService userDetailsService, ObjectMapper objectMapper) {
@@ -77,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public TokenAuthentication tokenAuthentication() {
-    return new TokenAuthentication(expirationTimeSeconds, tokenPrefix);
+    return new TokenAuthentication(secretKey, expirationTimeSeconds, tokenPrefix);
   }
 
   @Bean
@@ -103,8 +107,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .csrf()
         .disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
         .authorizeRequests()
         .anyRequest()
+        // TODO: configure auth matchers
         .permitAll()
         .and()
         .exceptionHandling()

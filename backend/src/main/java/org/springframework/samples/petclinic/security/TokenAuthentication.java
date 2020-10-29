@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Date;
-import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,18 +19,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Slf4j
 public class TokenAuthentication {
 
-  private static final String SECRET = UUID.randomUUID().toString();
-
+  private final String secretKey;
   private final long expirationTimeSeconds;
   private final String tokenPrefix;
 
-  public TokenAuthentication(long expirationTimeSeconds, String tokenPrefix) {
+  public TokenAuthentication(String secretKey, long expirationTimeSeconds, String tokenPrefix) {
+    this.secretKey = secretKey;
     this.expirationTimeSeconds = expirationTimeSeconds;
     this.tokenPrefix = tokenPrefix;
   }
@@ -37,7 +36,7 @@ public class TokenAuthentication {
     String jwtToken = Jwts.builder()
         .setSubject(username)
         .setExpiration(Date.from(LocalDateTime.now().plusSeconds(expirationTimeSeconds).atZone(ZoneOffset.UTC).toInstant()))
-        .signWith(SignatureAlgorithm.HS512, SECRET)
+        .signWith(SignatureAlgorithm.HS512, secretKey)
         .compact();
     res.addHeader(HttpHeaders.AUTHORIZATION, tokenPrefix + " " + jwtToken);
     res.getWriter().write("{\"token\":\"" + jwtToken + "\"}");
@@ -51,7 +50,7 @@ public class TokenAuthentication {
 
     try {
       String user = Jwts.parser()
-          .setSigningKey(SECRET)
+          .setSigningKey(secretKey)
           .parseClaimsJws(token.replace(tokenPrefix, ""))
           .getBody()
           .getSubject();
