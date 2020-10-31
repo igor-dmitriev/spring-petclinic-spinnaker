@@ -3,10 +3,6 @@ This project was forked from original Spring Boot Petclinic - [spring-petclinic-
 It's a port of the [Spring (Boot) PetClinic demo](https://github.com/spring-projects/spring-petclinic) with a frontend built using [ReactJS](https://facebook.github.io/react/),
 [TypeScript](https://www.typescriptlang.org/) and UI tests written with [Selenide](https://selenide.org/).
 
-## Related projects
-
-Note there is another Spring PetClinic example that uses React: [spring-petclinic-graphql](https://github.com/spring-petclinic/spring-petclinic-graphql). Beside React that example uses **GraphQL** for API queries instead of the REST API.
-
 ## Install and run
 
 ## Database configuration
@@ -43,41 +39,6 @@ After starting the server you can install and run the client from the `frontend`
 3. Open `http://localhost:3000`
 
 (Why not use the same server for backend and frontend? Because Webpack does a great job for serving JavaScript-based SPAs and I think it's not too uncommon to run this kind of apps using two dedicated server, one for backend, one for frontend)
-
-# UI tests
-
-1. Run ui tests:
-`./gradlew clean testUi`
-
-2. Allure report
-- `./gradlew clean build testUi allureGeneratedReport`
-- open `/build/reports/allure-report/index.html` from Intellij IDEA (Open in Browser)
-
-3. Code coverage
-- Launch SonarQube in Docker `docker run -d -p 9000:9000 -p 9002:9002 sonarqube`
-- `./gradlew clean build testUi sonarqube`
-- open SonarQube in a browser `http://localhost:9000`
-
-# Local run
-- Test classes have to extend `org.springframework.samples.petclinic.tests.LocalUiTest`
-- Spring Boot app, database and frontend must be launched
-
-# CI run
-- Test classes has to extend `org.springframework.samples.petclinic.tests.CiUiTest`
-- before starting the tests the following command must be executed to build up the projet
-`./gradlew clean assembleApp`
-
-# From the original sample README file:
-
-## Understanding the Spring Petclinic application with a few diagrams
-<a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
-
-## In case you find a bug/suggested improvement for Spring Petclinic ReactJS UI Tests
-Issue tracker is available here: https://github.com/igor-dmitriev/spring-petclinic-reactjs-ui-tests
-
-# Contributing
-
-The [issue tracker](https://github.com/igor-dmitriev/spring-petclinic-reactjs-ui-tests) is the preferred channel for bug reports, features requests and submitting pull requests.
 
 
 
