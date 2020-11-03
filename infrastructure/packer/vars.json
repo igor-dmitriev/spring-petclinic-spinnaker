@@ -1,0 +1,9 @@
+{
+  "instance_type": "t2.micro",
+  "base_ami": "ami-0947d2ba12ee1ff75",
+  "vpc_id": "vpc-6d30e817",
+  "subnet_id": "subnet-4428a423",
+  "security_group_ids": "sg-b3efecfc,sg-0fc16f8e71c1003ea",
+  "aws_region": "us-east-1",
+  "ami_name": "spring-petclinic-base-ami"
+}

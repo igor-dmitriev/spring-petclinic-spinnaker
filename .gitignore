@@ -35,4 +35,10 @@ out/
 ### Frontend ###
 /frontend/node_modules/
 /frontend/public/dist/
+
+
+### Terraform ###
 /.terraform/
+*.tfstate
+*.tfstate.backup
+
