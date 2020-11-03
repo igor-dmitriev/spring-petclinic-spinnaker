@@ -1,0 +1,69 @@
+services:
+  clouddriver:
+    host: localhost
+    port: 7002
+    baseUrl: http://localhost:7002
+    enabled: true
+  deck:
+    host: 0.0.0.0
+    port: 9000
+    baseUrl: http://${SPINNAKER_PUBLIC_IP}:9000
+    enabled: true
+  echo:
+    host: localhost
+    port: 8089
+    baseUrl: http://localhost:8089
+    enabled: true
+  fiat:
+    host: localhost
+    port: 7003
+    baseUrl: http://localhost:7003
+    enabled: false
+  front50:
+    host: localhost
+    port: 8080
+    baseUrl: http://localhost:8080
+    enabled: true
+  gate:
+    host: 0.0.0.0
+    port: 8084
+    baseUrl: http://${SPINNAKER_PUBLIC_IP}:8084
+    enabled: true
+  igor:
+    host: localhost
+    port: 8088
+    baseUrl: http://localhost:8088
+    enabled: true
+  kayenta:
+    host: localhost
+    port: 8090
+    baseUrl: http://localhost:8090
+    enabled: false
+  orca:
+    host: localhost
+    port: 8083
+    baseUrl: http://localhost:8083
+    enabled: true
+  redis:
+    host: localhost
+    port: 6379
+    baseUrl: redis://localhost:6379
+    enabled: true
+  rosco:
+    host: localhost
+    port: 8087
+    baseUrl: http://localhost:8087
+    enabled: true
+  monitoringDaemon:
+    host: localhost
+    port: 8008
+    baseUrl: http://localhost:8008
+    enabled: false
+
+global.spinnaker.timezone: America/Los_Angeles
+
+echo:
+  notifications:
+    slack:
+      enabled: false
+      botName:

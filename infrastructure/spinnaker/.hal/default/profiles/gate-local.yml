@@ -1,0 +1,20 @@
+server:
+  ssl:
+    enabled: false
+  port: '8084'
+  address: 0.0.0.0
+
+spring:
+  security:
+    user:
+      name: ${SPINNAKER_AUTH_LOGIN}
+      password: ${SPINNAKER_AUTH_PASSWORD}
+
+security:
+  basic:
+    enabled: true
+  basicform:
+    enabled: true
+  user:
+    name: ${SPINNAKER_AUTH_LOGIN}
+    password: ${SPINNAKER_AUTH_PASSWORD}

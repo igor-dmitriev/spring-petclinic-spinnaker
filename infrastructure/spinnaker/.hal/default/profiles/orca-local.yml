@@ -1,0 +1,94 @@
+spectator:
+  applicationName: ${spring.application.name}
+  webEndpoint:
+    enabled: false
+
+# halconfig
+
+server:
+  port: ${services.orca.port:8083}
+  address: ${services.orca.host:localhost}
+
+oort:
+  baseUrl: ${services.clouddriver.baseUrl:http://localhost:7002}
+
+front50:
+  enabled: true
+  baseUrl: ${services.front50.baseUrl:http://localhost:8080}
+
+mort:
+  baseUrl: ${services.clouddriver.baseUrl:http://localhost:7002}
+
+kato:
+  baseUrl: ${services.clouddriver.baseUrl:http://localhost:7002}
+
+bakery:
+  enabled: true
+  baseUrl: ${services.rosco.baseUrl:http://localhost:8087}
+  extractBuildDetails: ${services.rosco.extractBuildDetails:true}
+  allowMissingPackageInstallation: ${services.rosco.allowMissingPackageInstallation:false}
+
+echo:
+  enabled: true
+  baseUrl: ${services.echo.baseUrl:http://localhost:8089}
+
+igor:
+  enabled: true
+  baseUrl: ${services.igor.baseUrl:http://localhost:8088}
+
+kayenta:
+  enabled: ${services.kayenta.enabled:false}
+  baseUrl: ${services.kayenta.baseUrl:http://localhost:8090}
+
+redis:
+  connection: ${services.redis.baseUrl:redis://localhost:6379}
+
+tasks:
+  executionWindow:
+    timezone: ${global.spinnaker.timezone:America/Los_Angeles}
+
+default.bake.account: non-prod
+default.securityGroups:
+default.vpc.securityGroups:
+webhook:
+  trust:
+    enabled: false
+
+integrations:
+  gremlin:
+    enabled: false
+    baseUrl: https://api.gremlin.com/v1
+
+pipelineTemplates.enabled: false
+pipelineTemplate.enabled: false
+plugins: {}
+
+spinnaker:
+  extensibility:
+    repositories: {}
+
+sql:
+  enabled: true
+  connectionPool:
+    jdbcUrl: jdbc:mysql://${SPINNAKER_DB_HOST}:3306/orca
+    user: orca_service
+    password: ${SPINNAKER_DB_PASSWORD}
+    connectionTimeout: 5000
+    maxLifetime: 30000
+    maxPoolSize: 50
+  migration:
+    jdbcUrl: jdbc:mysql://${SPINNAKER_DB_HOST}:3306/orca
+    user: orca_migrate
+    password: ${SPINNAKER_DB_PASSWORD}
+
+# Ensure we're only using SQL for accessing execution state
+executionRepository:
+  sql:
+    enabled: true
+  redis:
+    enabled: false
+
+# Reporting on active execution metrics will be handled by SQL
+monitor:
+  activeExecutions:
+    redis: false
