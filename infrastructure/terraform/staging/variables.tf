@@ -1,0 +1,9 @@
+variable "region" {}
+variable "public_a_subnet" {}
+variable "public_b_subnet" {}
+variable "private_db_sg" {}
+variable "public_app_sg" {}
+variable "console_sg" {}
+variable "default_sg" {}
+variable "spinnaker_sg" {}
+variable "db_password" {}

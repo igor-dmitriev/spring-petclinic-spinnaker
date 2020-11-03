@@ -1,0 +1,8 @@
+region = "us-east-1"
+public_a_subnet = "subnet-4428a423"
+public_b_subnet = "subnet-d131baff"
+spinnaker_sg = "sg-007305462082dc667"
+private_db_sg = "sg-034ad710399e0b626"
+public_app_sg = "sg-0c0f7340a9b4e77d8"
+console_sg = "sg-0fc16f8e71c1003ea"
+default_sg = "sg-b3efecfc"
