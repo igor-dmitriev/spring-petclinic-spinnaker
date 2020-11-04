@@ -108,15 +108,6 @@ aws:
         - name: us-east-1
       assumeRole: role/spinnakerManaged
       lifecycleHooks: []
-    - name: prod
-      requiredGroupMembership: []
-      providerVersion: V1
-      permissions: {}
-      accountId: '933943444071'
-      regions:
-        - name: us-east-1
-      assumeRole: role/spinnakerManaged
-      lifecycleHooks: []
   primaryAccount: non-prod
   bakeryDefaults:
     baseImages: []

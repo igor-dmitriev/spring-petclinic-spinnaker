@@ -13,7 +13,7 @@ sudo swapon /swapfile
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:webupd8team/java -y
 sudo apt-get update -y
-sudo apt install openjdk-8-jdk -y
+sudo apt install openjdk-11-jdk -y
 
 # Install Halyard
 curl -O https://raw.githubusercontent.com/spinnaker/halyard/master/install/debian/InstallHalyard.sh
