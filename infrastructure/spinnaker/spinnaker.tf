@@ -268,7 +268,8 @@ resource "aws_instance" "jenkins" {
     // https://github.com/jenkinsci/configuration-as-code-plugin/issues/1189#issuecomment-560565982
     content = templatefile("jenkins.yml", {
       AWS_ACCESS_KEY = var.aws_access_key
-      AWS_SECRET_KEY = var.aws_secret_key
+      AWS_SECRET_KEY = var.aws_secret_key,
+      GITHUB_PRIVATE_KEY = var.github_private_key
     })
     destination = "${local.jenkins_server_home_directory}/jenkins.yaml"
   }

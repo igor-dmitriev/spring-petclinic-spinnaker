@@ -48,7 +48,7 @@ echo "jenkins.model.Jenkins.instance.securityRealm.createAccount(\"jenkins\", \"
 java -jar jenkins-cli.jar -s "$JENKINS_URL" groovy =
 
 # Install plugins
-plugins=(allure-jenkins-plugin aws-java-sdk authentication-tokens cloudbees-bitbucket-branch-source blueocean-bitbucket-pipeline blueocean blueocean-bitbucket-pipeline blueocean-core-js blueocean-pipeline-editor aws-credentials blueocean-commons blueocean-config credentials jenkins-design-language blueocean-dashboard blueocean-display-url docker-commons docker-workflow blueocean-events external-monitor-job favorite blueocean-git-pipeline blueocean-github-pipeline greenballs newrelic-deployment-notifier Office-365-Connector blueocean-personalization pubsub-light sse-gateway simple-theme-plugin ssh-agent variant blueocean-web handy-uri-templates-2-api htmlpublisher blueocean-i18n jaxb jira blueocean-jira blueocean-jwt locale mapdb-api timestamper build-timeout strict-crumb-issuer lockable-resources)
+plugins=(allure-jenkins-plugin github aws-java-sdk authentication-tokens cloudbees-bitbucket-branch-source blueocean-bitbucket-pipeline blueocean blueocean-bitbucket-pipeline blueocean-core-js blueocean-pipeline-editor aws-credentials blueocean-commons blueocean-config credentials jenkins-design-language blueocean-dashboard blueocean-display-url docker-commons docker-workflow blueocean-events external-monitor-job favorite blueocean-git-pipeline blueocean-github-pipeline greenballs newrelic-deployment-notifier Office-365-Connector blueocean-personalization pubsub-light sse-gateway simple-theme-plugin ssh-agent variant blueocean-web handy-uri-templates-2-api htmlpublisher blueocean-i18n jaxb jira blueocean-jira blueocean-jwt locale mapdb-api timestamper build-timeout strict-crumb-issuer lockable-resources)
 for plugin in "${plugins[@]}"
 do
   java -jar jenkins-cli.jar -s "$JENKINS_URL" install-plugin "$plugin" -deploy
@@ -57,7 +57,7 @@ done
 java -jar jenkins-cli.jar -s "$JENKINS_URL" install-plugin configuration-as-code -deploy
 
 # Create Jobs
-# java -jar jenkins-cli.jar -s "$JENKINS_URL" create-job spring-petclinic-publish-rpm < spring_petclinic_publish_rpm.xml
+java -jar jenkins-cli.jar -s "$JENKINS_URL" create-job spring-petclinic-publish-rpm < spring_petclinic_publish_rpm.xml
 
 # Restart Jenkins
 sudo systemctl restart jenkins

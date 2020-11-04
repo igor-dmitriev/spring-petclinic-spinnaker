@@ -28,3 +28,4 @@ variable "spinnaker_auth_password" {}
 variable "jenkins_password" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
+variable "github_private_key" {}
