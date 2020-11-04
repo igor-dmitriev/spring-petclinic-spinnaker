@@ -1,0 +1,214 @@
+{
+  "keepWaitingPipelines": true,
+  "lastModifiedBy": "spinnaker",
+  "limitConcurrent": true,
+  "spelEvaluator": "v4",
+  "stages": [
+    {
+      "baseLabel": "release",
+      "baseOs": "amazon-linux2-golden-ami",
+      "cloudProviderType": "aws",
+      "extendedAttributes": {
+        "aws_instance_type": "t2.micro",
+        "repository": "https://spring-petclinic-yum-repository.s3.amazonaws.com/$basearch/"
+      },
+      "name": "Bake",
+      "package": "petclinic",
+      "refId": "1",
+      "region": "us-east-1",
+      "regions": [
+        "us-east-1"
+      ],
+      "requisiteStageRefIds": [],
+      "skipRegionDetection": true,
+      "storeType": "ebs",
+      "templateFileName": "aws-ebs-custom.json",
+      "type": "bake",
+      "user": "[anonymous]",
+      "vmType": "hvm"
+    },
+    {
+      "clusters": [
+        {
+          "account": "non-prod",
+          "application": "petclinic",
+          "availabilityZones": {
+            "us-east-1": [
+              "us-east-1a",
+              "us-east-1b",
+              "us-east-1c",
+              "us-east-1d",
+              "us-east-1e",
+              "us-east-1f"
+            ]
+          },
+          "base64UserData": "IyEvYmluL2Jhc2gKZXhlYyA+IC90bXAvcGV0Y2xpbmljX3VzZXJfZGF0YS5sb2cgMj4mMQpzZXQgLXgKCnN1ZG8gdGVlIC9ldGMvZGVmYXVsdC9wZXRjbGluaWMgPi9kZXYvbnVsbCA8PEVPRgpTUFJJTkdfUFJPRklMRT0ic3RhZ2luZyIKU1NNX1BSRUZJWD0iL3BldGNsaW5pYy9zdGFnaW5nIgpFQzJfUkVHSU9OPSJ1cy1lYXN0LTEiCkVPRgpzdWRvIHN5c3RlbWN0bCBzdGFydCBwZXRjbGluaWMKc3VkbyBzeXN0ZW1jdGwgZW5hYmxlIC9vcHQvcGV0Y2xpbmljL2Jpbi9wZXRjbGluaWMuc2VydmljZQ==",
+          "capacity": {
+            "desired": 1,
+            "max": 1,
+            "min": 1
+          },
+          "cloudProvider": "aws",
+          "cooldown": "120",
+          "copySourceCustomBlockDeviceMappings": false,
+          "delayBeforeDisableSec": 0,
+          "delayBeforeScaleDownSec": 0,
+          "ebsOptimized": false,
+          "enabledMetrics": [],
+          "freeFormDetails": "",
+          "healthCheckGracePeriod": "120",
+          "healthCheckType": "ELB",
+          "iamRole": "petclinic-ec2-staging",
+          "instanceMonitoring": false,
+          "instanceType": "t2.micro",
+          "keyPair": "spinnaker",
+          "loadBalancers": [
+            "petclinic-staging"
+          ],
+          "maxRemainingAsgs": 2,
+          "moniker": {
+            "app": "petclinic",
+            "stack": "staging"
+          },
+          "provider": "aws",
+          "rollback": {
+            "onFailure": true
+          },
+          "scaleDown": false,
+          "securityGroups": [
+            "sg-b3efecfc",
+            "sg-0c0f7340a9b4e77d8",
+            "sg-0fc16f8e71c1003ea"
+          ],
+          "spelLoadBalancers": [],
+          "spelTargetGroups": [],
+          "spotPrice": "",
+          "stack": "staging",
+          "strategy": "redblack",
+          "subnetType": "public",
+          "suspendedProcesses": [],
+          "tags": {
+            "Name": "spring-petclinic"
+          },
+          "targetGroups": [],
+          "targetHealthyDeployPercentage": 100,
+          "terminationPolicies": [
+            "Default"
+          ],
+          "useAmiBlockDeviceMappings": false
+        }
+      ],
+      "name": "Deploy",
+      "refId": "2",
+      "requisiteStageRefIds": [
+        "1"
+      ],
+      "type": "deploy"
+    },
+    {
+      "cloudProvider": "aws",
+      "cloudProviderType": "aws",
+      "cluster": "petclinic-staging",
+      "credentials": "non-prod",
+      "moniker": {
+        "app": "petclinic",
+        "cluster": "petclinic-staging",
+        "stack": "staging"
+      },
+      "name": "Destroy Oldest Server Group",
+      "refId": "3",
+      "regions": [
+        "us-east-1"
+      ],
+      "requisiteStageRefIds": [
+        "4"
+      ],
+      "target": "oldest_asg_dynamic",
+      "type": "destroyServerGroup"
+    },
+    {
+      "name": "Wait",
+      "refId": "4",
+      "requisiteStageRefIds": [
+        "2"
+      ],
+      "type": "wait",
+      "waitTime": 60
+    }
+  ],
+  "triggers": [
+    {
+      "artifacts": [],
+      "buildInfo": {
+        "artifacts": [
+          {
+            "decorated": false,
+            "displayPath": "petclinic-v0.8.0-1.x86_64.rpm",
+            "fileName": "petclinic-v0.8.0-1.x86_64.rpm",
+            "name": "publish-artifact",
+            "reference": "backend/build/distributions/petclinic-v0.8.0-1.x86_64.rpm",
+            "relativePath": "backend/build/distributions/petclinic-v0.8.0-1.x86_64.rpm",
+            "type": "jenkins/file",
+            "version": "21"
+          },
+          {
+            "decorated": false,
+            "displayPath": "build.properties",
+            "fileName": "build.properties",
+            "name": "publish-artifact",
+            "reference": "build.properties",
+            "relativePath": "build.properties",
+            "type": "jenkins/file",
+            "version": "21"
+          },
+          {
+            "decorated": false,
+            "displayPath": "gradle.properties",
+            "fileName": "gradle.properties",
+            "name": "publish-artifact",
+            "reference": "gradle.properties",
+            "relativePath": "gradle.properties",
+            "type": "jenkins/file",
+            "version": "21"
+          }
+        ],
+        "building": false,
+        "duration": 87214,
+        "fullDisplayName": "publish-artifact #21",
+        "name": "publish-artifact",
+        "number": 21,
+        "result": "SUCCESS",
+        "scm": [
+          {
+            "branch": "master",
+            "name": "refs/remotes/origin/master",
+            "remoteUrl": "git@github.com:igor-dmitriev/spring-petclinic-spinnaker.git",
+            "sha1": "6667ffa5c9d23b8378fe483e93904f27ffa8d0df"
+          }
+        ],
+        "timestamp": "1602529745363",
+        "url": "http://3.221.127.143:8080/job/publish-artifact/21/"
+      },
+      "buildNumber": 21,
+      "description": "(Jenkins) jenkins-master: publish-artifact",
+      "dryRun": false,
+      "enabled": true,
+      "expectedArtifacts": [],
+      "job": "publish-artifact",
+      "master": "jenkins-master",
+      "notifications": [],
+      "parameters": {},
+      "properties": {
+        "buildUrl": "http://3.221.127.143:8080/job/publish-artifact/21/",
+        "version": "v0.8.0"
+      },
+      "propertyFile": "build.properties",
+      "rebake": true,
+      "resolvedExpectedArtifacts": [],
+      "strategy": false,
+      "type": "jenkins",
+      "user": "[anonymous]"
+    }
+  ],
+  "updateTs": "1604499234855"
+}
