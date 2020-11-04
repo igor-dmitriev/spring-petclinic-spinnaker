@@ -59,8 +59,8 @@ integrations:
     enabled: false
     baseUrl: https://api.gremlin.com/v1
 
-pipelineTemplates.enabled: false
-pipelineTemplate.enabled: false
+pipelineTemplates.enabled: true
+pipelineTemplate.enabled: true
 plugins: {}
 
 spinnaker:
