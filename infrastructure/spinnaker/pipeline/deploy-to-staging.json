@@ -5,6 +5,7 @@
   "spelEvaluator": "v4",
   "stages": [
     {
+      "amiSuffix": "${trigger['properties']['version']}-${T(java.util.UUID).randomUUID().toString().substring(0,8)}",
       "baseLabel": "release",
       "baseOs": "amazon-linux2-golden-ami",
       "cloudProviderType": "aws",
@@ -103,6 +104,7 @@
       "requisiteStageRefIds": [
         "1"
       ],
+      "stageTimeoutMs": 1200000,
       "type": "deploy"
     },
     {
@@ -210,5 +212,5 @@
       "user": "[anonymous]"
     }
   ],
-  "updateTs": "1604499234855"
+  "updateTs": "1604523903768"
 }
