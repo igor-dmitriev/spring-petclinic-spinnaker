@@ -1,7 +1,7 @@
 currentDeployment: default
 deploymentConfigurations:
   - name: default
-    version: 1.23.3
+    version: 1.22.0
     providers:
       appengine:
         enabled: false
