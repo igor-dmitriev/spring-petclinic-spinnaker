@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-petclinic-app
+  namespace: staging
+spec:
+  ports:
+    - nodePort: 30007
+      port: 8080
+      protocol: TCP
+  selector:
+    app: spring-petclinic
+  type: NodePort

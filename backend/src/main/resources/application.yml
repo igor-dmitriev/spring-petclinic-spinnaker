@@ -1,3 +1,6 @@
+server:
+  shutdown: graceful
+
 spring:
   datasource:
     url: jdbc:postgresql://${AWS_DB_HOST:localhost}/petclinic
@@ -27,6 +30,17 @@ spring:
     open-in-view: false
   flyway:
     locations: [ "classpath:db/migration/ddl", "classpath:db/migration/dml" ]
+
+  task:
+    execution:
+      shutdown:
+        await-termination: true
+        await-termination-period: 60000
+
+    scheduling:
+      shutdown:
+        await-termination: true
+        await-termination-period: 60000
 
 security:
   custom:

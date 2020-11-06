@@ -50,17 +50,3 @@ spec:
             failureThreshold: 4
             periodSeconds: 5
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: spring-petclinic-app
-  namespace: staging
-spec:
-  ports:
-    - nodePort: 30007
-      port: 8080
-      protocol: TCP
-  selector:
-    app: spring-petclinic
-  type: NodePort

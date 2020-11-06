@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Colin But
  */
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(value = OwnerController.class, secure = false)
+@WebMvcTest(value = OwnerController.class)
 @MockBean(UserDetailsService.class)
 public class OwnerControllerTests {
 
