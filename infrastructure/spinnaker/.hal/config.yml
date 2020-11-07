@@ -16,6 +16,7 @@ deploymentConfigurations:
             accountId: '933943444071'
             regions:
               - name: us-east-1
+              - name: us-west-2
             assumeRole: role/spinnakerManaged
             lifecycleHooks: []
         primaryAccount: non-prod
@@ -24,6 +25,7 @@ deploymentConfigurations:
         defaultKeyPairTemplate: '{{name}}-keypair'
         defaultRegions:
           - name: us-east-1
+          - name: us-west-2
         defaults:
           iamRole: BaseIAMRole
       ecs:

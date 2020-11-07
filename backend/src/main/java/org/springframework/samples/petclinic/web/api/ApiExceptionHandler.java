@@ -1,5 +1,8 @@
 package org.springframework.samples.petclinic.web.api;
 
+import org.apache.catalina.connector.ClientAbortException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -82,5 +85,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     return handleExceptionInternal(ex, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+  }
+
+  @ExceptionHandler(ClientAbortException.class)
+  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+  public ResponseEntity<Object> exceptionHandler(ClientAbortException e, WebRequest request) {
+    if (StringUtils.containsIgnoreCase(ExceptionUtils.getRootCauseMessage(e), "Broken pipe")) {
+      return null;
+    } else {
+      return unhandledException(e, request);
+    }
   }
 }

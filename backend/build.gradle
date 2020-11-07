@@ -50,6 +50,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    implementation 'org.apache.commons:commons-lang3'
     implementation 'com.google.guava:guava:28.0-jre'
     implementation 'software.amazon.awssdk:ssm:2.10.89'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
